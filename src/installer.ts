@@ -1,7 +1,5 @@
-import artifact from '@actions/artifact'
 import * as core from '@actions/core'
-import * as glob from '@actions/glob'
-import {OSType, getOs, getRelease} from './platform'
+import {OSType, getOs} from './platform'
 import {SemVer} from 'semver'
 import {exec} from '@actions/exec'
 
@@ -69,26 +67,5 @@ export async function install(
   } catch (error) {
     core.warning(`Error during installation: ${error}`)
     throw error
-  } finally {
-    // Always upload installation log regardless of error
-    const osType = await getOs()
-    const osRelease = await getRelease()
-    if (osType === OSType.linux) {
-      const artifactName = `cuda-install-${osType}-${osRelease}-${method}-${logFileSuffix}`
-      const patterns = ['/var/log/cuda-installer.log']
-      const globber = await glob.create(patterns.join('\n'))
-      const files = await globber.glob()
-      if (files.length > 0) {
-        const rootDirectory = '/var/log'
-        const uploadResult = await artifact.uploadArtifact(
-          artifactName,
-          files,
-          rootDirectory
-        )
-        core.debug(`Upload result: ${uploadResult}`)
-      } else {
-        core.debug(`No log file to upload`)
-      }
-    }
   }
 }
