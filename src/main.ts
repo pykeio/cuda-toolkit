@@ -96,9 +96,7 @@ async function run(): Promise<void> {
         executablePath,
         version,
         subPackagesArray,
-        linuxLocalArgsArray,
-        methodString,
-        logFileSuffix
+        linuxLocalArgsArray
       )
     }
 

@@ -7,9 +7,7 @@ export async function install(
   executablePath: string,
   version: SemVer,
   subPackagesArray: string[],
-  linuxLocalArgsArray: string[],
-  method: string,
-  logFileSuffix: string
+  linuxLocalArgsArray: string[]
 ): Promise<void> {
   // Install arguments, see: https://docs.nvidia.com/cuda/cuda-installation-guide-linux/index.html#runfile-advanced
   // and https://docs.nvidia.com/cuda/cuda-installation-guide-microsoft-windows/index.html
