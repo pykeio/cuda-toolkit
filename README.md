@@ -8,7 +8,7 @@ This action installs the [NVIDIA® CUDA® Toolkit](https://developer.nvidia.com/
 
 **Optional** The CUDA version to install. View `src/link/windows-links.ts` and `src/link/linux-links.ts` for available versions.
 
-Default: `'12.4.1'`.
+Default: `'12.5.0'`.
 
 ### `sub-packages`
 
@@ -48,6 +48,31 @@ See the [Nvidia Docs](https://docs.nvidia.com/cuda/cuda-installation-guide-linux
 
 Default: `'["--toolkit", "--samples"]'`.
 
+### `log-file-suffix`
+
+**Required with matrix builds**
+
+Add suffix to the log file name which gets uploaded as an artifact. This **has** to be set when running a matrix build.
+The log file already contains the OS type (Linux/Windows) and install method (local/network) but it is not aware of other matrix variables, so add those here.
+
+For example if you use multiple linux distros:
+```
+jobs:
+  CI:
+    strategy:
+      matrix:
+        os: [ubuntu-22.04, ubuntu-20.04]
+    runs-on: ${{ matrix.os }}
+    steps:
+    - uses: Jimver/cuda-toolkit@master
+      id: cuda-toolkit
+      with:
+        log-file-suffix: '${{matrix.os}}.txt'
+
+```
+
+Default: `'log.txt'`
+
 ## Outputs
 
 ### `cuda`
@@ -62,10 +87,10 @@ The path where cuda is installed (same as `CUDA_PATH` in `GITHUB_ENV`).
 
 ```yaml
 steps:
-- uses: Jimver/cuda-toolkit@v0.2.15
+- uses: Jimver/cuda-toolkit@v0.2.16
   id: cuda-toolkit
   with:
-    cuda: '12.4.1'
+    cuda: '12.5.0'
 
 - run: echo "Installed cuda version is: ${{steps.cuda-toolkit.outputs.cuda}}"
 
